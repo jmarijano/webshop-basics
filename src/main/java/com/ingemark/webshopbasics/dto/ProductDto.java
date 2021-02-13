@@ -1,5 +1,6 @@
 package com.ingemark.webshopbasics.dto;
 
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -27,7 +28,7 @@ public class ProductDto {
 	private String name;
 
 	@NotNull(message = "{empty.product.price}")
-	@Min(value = 0L, message = "{invalid.product.price}")
+	@DecimalMin(value = "0.0", inclusive = false, message = "{invalid.product.price}")
 	private Double price;
 	private String description;
 	@NotNull(message = "{empty.product.is.available}")

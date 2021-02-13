@@ -15,4 +15,6 @@ public interface ProductService {
 	ProductDto update(Long pProductId, ProductDto pProductDto);
 
 	void delete(Long pProductId);
+
+	List<ProductDto> findAllByIds(List<Long> pIds);
 }

@@ -1,7 +1,9 @@
 package com.ingemark.webshopbasics.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,7 +21,6 @@ public class Product {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Setter(value = AccessLevel.PRIVATE)
 	private Long id;
 
 	@Column(name = "code", length = 10, unique = true)
@@ -36,8 +37,5 @@ public class Product {
 
 	@Column(name = "is_available")
 	private Boolean isAvailable;
-	
-	@OneToOne(mappedBy = "product")
-    private OrderItem orderItem;
 
 }

@@ -13,6 +13,7 @@ import com.ingemark.webshopbasics.exception.SystemErrorException;
 import com.ingemark.webshopbasics.model.Product;
 import com.ingemark.webshopbasics.repository.ProductRepository;
 import com.ingemark.webshopbasics.service.ProductService;
+import com.ingemark.webshopbasics.utils.ProductMapper;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -22,13 +23,13 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public List<ProductDto> findAll() {
-		return iProductRepository.findAll().stream().map(tProduct -> mapProductToProductDto(tProduct))
+		return iProductRepository.findAll().stream().map(tProduct -> ProductMapper.mapProductToProductDto(tProduct))
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public ProductDto getOne(Long pId) {
-		return iProductRepository.findById(pId).map(tProduct -> mapProductToProductDto(tProduct))
+		return iProductRepository.findById(pId).map(tProduct -> ProductMapper.mapProductToProductDto(tProduct))
 				.orElseThrow(() -> new ResourceNotFoundException("resource.not.found"));
 	}
 
@@ -43,7 +44,7 @@ public class ProductServiceImpl implements ProductService {
 		tProduct.setPriceHrk(pProductDto.getPrice());
 		try {
 			Product save = iProductRepository.save(tProduct);
-			return mapProductToProductDto(save);
+			return ProductMapper.mapProductToProductDto(save);
 		} catch (DataIntegrityViolationException e) {
 			throw new SystemErrorException("data.integrity.product.code");
 		}
@@ -60,15 +61,15 @@ public class ProductServiceImpl implements ProductService {
 			tProduct.setPriceHrk(pProductDto.getPrice());
 			try {
 				Product save = iProductRepository.save(tProduct);
-				return mapProductToProductDto(save);
+				return ProductMapper.mapProductToProductDto(save);
 			} catch (DataIntegrityViolationException e) {
 				throw new SystemErrorException("data.integrity.product.code");
 			}
 		}).orElseGet(() -> {
-			Product tProduct = mapProductDtoToProduct(pProductDto);
+			Product tProduct = ProductMapper.mapProductDtoToProduct(pProductDto);
 			try {
 				Product save = iProductRepository.save(tProduct);
-				return mapProductToProductDto(save);
+				return ProductMapper.mapProductToProductDto(save);
 			} catch (DataIntegrityViolationException e) {
 				throw new SystemErrorException("data.integrity.product.code");
 			}
@@ -86,25 +87,10 @@ public class ProductServiceImpl implements ProductService {
 		}
 	}
 
-	private Product mapProductDtoToProduct(ProductDto pProductDto) {
-		Product tOutput = new Product();
-		tOutput.setCode(pProductDto.getCode());
-		tOutput.setDescription(pProductDto.getDescription());
-		tOutput.setIsAvailable(pProductDto.getIsAvailable());
-		tOutput.setName(pProductDto.getName());
-		tOutput.setPriceHrk(pProductDto.getPrice());
-		return tOutput;
-	}
-
-	private ProductDto mapProductToProductDto(Product pProduct) {
-		ProductDto tOutput = new ProductDto();
-		tOutput.setId(pProduct.getId());
-		tOutput.setCode(pProduct.getCode());
-		tOutput.setDescription(pProduct.getDescription());
-		tOutput.setIsAvailable(pProduct.getIsAvailable());
-		tOutput.setName(pProduct.getName());
-		tOutput.setPrice(pProduct.getPriceHrk());
-		return tOutput;
+	@Override
+	public List<ProductDto> findAllByIds(List<Long> pIds) {
+		return iProductRepository.findAllById(pIds).stream()
+				.map(tProduct -> ProductMapper.mapProductToProductDto(tProduct)).collect(Collectors.toList());
 	}
 
 }

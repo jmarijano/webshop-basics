@@ -13,6 +13,7 @@ import com.ingemark.webshopbasics.exception.SystemErrorException;
 import com.ingemark.webshopbasics.model.Customer;
 import com.ingemark.webshopbasics.repository.CustomerRepository;
 import com.ingemark.webshopbasics.service.CustomerService;
+import com.ingemark.webshopbasics.utils.CustomerMapper;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -21,23 +22,23 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public List<CustomerDto> findAll() {
-		return iCustomerRepository.findAll().stream().map(tProduct -> mapCustomerToCustomerDto(tProduct))
+		return iCustomerRepository.findAll().stream().map(tProduct -> CustomerMapper.mapCustomerToCustomerDto(tProduct))
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public CustomerDto getOne(Long pId) {
-		return iCustomerRepository.findById(pId).map(tProduct -> mapCustomerToCustomerDto(tProduct))
+		return iCustomerRepository.findById(pId).map(tProduct -> CustomerMapper.mapCustomerToCustomerDto(tProduct))
 				.orElseThrow(() -> new ResourceNotFoundException("resource.not.found"));
 	}
 
 	@Override
 	public CustomerDto save(CustomerDto pProductDto) {
 
-		Customer tProduct = mapCustomertDtoToCustomer(pProductDto);
+		Customer tProduct = CustomerMapper.mapCustomertDtoToCustomer(pProductDto);
 		try {
 			Customer save = iCustomerRepository.save(tProduct);
-			return mapCustomerToCustomerDto(save);
+			return CustomerMapper.mapCustomerToCustomerDto(save);
 		} catch (DataIntegrityViolationException e) {
 			throw new SystemErrorException("data.integrity.customer.email");
 		}
@@ -52,15 +53,15 @@ public class CustomerServiceImpl implements CustomerService {
 			tProduct.setLastName(pProductDto.getLastName());
 			try {
 				Customer save = iCustomerRepository.save(tProduct);
-				return mapCustomerToCustomerDto(save);
+				return CustomerMapper.mapCustomerToCustomerDto(save);
 			} catch (DataIntegrityViolationException e) {
 				throw new SystemErrorException("data.integrity.customer.email");
 			}
 		}).orElseGet(() -> {
-			Customer tProduct = mapCustomertDtoToCustomer(pProductDto);
+			Customer tProduct = CustomerMapper.mapCustomertDtoToCustomer(pProductDto);
 			try {
 				Customer save = iCustomerRepository.save(tProduct);
-				return mapCustomerToCustomerDto(save);
+				return CustomerMapper.mapCustomerToCustomerDto(save);
 			} catch (DataIntegrityViolationException e) {
 				throw new SystemErrorException("data.integrity.customer.email");
 			}
@@ -76,23 +77,6 @@ public class CustomerServiceImpl implements CustomerService {
 		} catch (Exception e) {
 
 		}
-	}
-
-	private Customer mapCustomertDtoToCustomer(CustomerDto pCustomerDto) {
-		Customer tOutput = new Customer();
-		tOutput.setEmail(pCustomerDto.getEmail());
-		tOutput.setFirstName(pCustomerDto.getFirstName());
-		tOutput.setLastName(pCustomerDto.getLastName());
-		return tOutput;
-	}
-
-	private CustomerDto mapCustomerToCustomerDto(Customer pCustomer) {
-		CustomerDto tOutput = new CustomerDto();
-		tOutput.setEmail(pCustomer.getEmail());
-		tOutput.setFirstName(pCustomer.getFirstName());
-		tOutput.setId(pCustomer.getId());
-		tOutput.setLastName(pCustomer.getLastName());
-		return tOutput;
 	}
 
 }

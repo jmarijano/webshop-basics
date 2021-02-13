@@ -32,7 +32,7 @@ public class Customer {
 	@Column(name = "email", nullable = false, unique = true)
 	private String email;
 
-	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "customer", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
 	private List<Order> orders;
 
 }

@@ -53,7 +53,7 @@ public class ProductController {
 
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ResponseEntity<?> delete(@PathVariable("id") Long pProductId) {
+	public ResponseEntity<Void> delete(@PathVariable("id") Long pProductId) {
 
 		iProductService.delete(pProductId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

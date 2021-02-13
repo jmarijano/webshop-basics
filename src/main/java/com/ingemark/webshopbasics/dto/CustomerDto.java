@@ -2,7 +2,6 @@ package com.ingemark.webshopbasics.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -19,13 +18,13 @@ public class CustomerDto {
 
 	private Long id;
 
-	@NotNull(message = "{empty.customer.first.name}")
+	@NotEmpty(message = "{empty.customer.first.name}")
 	private String firstName;
 
 	@NotEmpty(message = "{empty.customer.last.name}")
 	private String lastName;
 
-	@NotNull(message = "{empty.customer.email}")
+	@NotEmpty(message = "{empty.customer.email}")
 	@Email(message = "{invalid.customer.email.format}")
 	private String email;
 

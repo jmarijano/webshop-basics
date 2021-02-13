@@ -1,5 +1,6 @@
 package com.ingemark.webshopbasics.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -31,7 +33,7 @@ public class Order {
 	@Setter(value = AccessLevel.PRIVATE)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	private Customer customer;
 
 	@Enumerated(EnumType.ORDINAL)
@@ -44,6 +46,10 @@ public class Order {
 	private Double totalPriceEur;
 
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<OrderItem> orderItems;
+	private List<OrderItem> orderItems = new ArrayList<>();
 
+	public void addOrderItem(OrderItem pOrderItem) {
+		orderItems.add(pOrderItem);
+		pOrderItem.setOrder(this);
+	}
 }

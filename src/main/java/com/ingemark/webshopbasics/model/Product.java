@@ -18,19 +18,19 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(name = "code", length = 10, unique = true)
+	@Column(name = "code", length = 10, unique = true, nullable = false)
 	private String code;
 
-	@Column(name = "name")
+	@Column(name = "name", nullable = false)
 	private String name;
 
-	@Column(name = "price_hrk")
+	@Column(name = "price_hrk", nullable = false)
 	private Double priceHrk;
 
 	@Column(name = "description")
 	private String description;
 
-	@Column(name = "is_available")
+	@Column(name = "is_available",nullable = false)
 	private Boolean isAvailable;
 
 }

@@ -28,7 +28,7 @@ public class OrderItem {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Order order;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.DETACH)
 	@JoinColumn(name = "product_id", referencedColumnName = "id")
 	private Product product;
 

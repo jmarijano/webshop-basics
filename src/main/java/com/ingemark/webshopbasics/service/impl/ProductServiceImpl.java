@@ -93,4 +93,11 @@ public class ProductServiceImpl implements ProductService {
 				.map(tProduct -> ProductMapper.mapProductToProductDto(tProduct)).collect(Collectors.toList());
 	}
 
+	@Override
+	public List<ProductDto> findAllByIdInAndIsAvailable(List<Long> pIds, Boolean pIsAvailable) {
+		return iProductRepository.findAllByIdInAndIsAvailable(pIds,
+				pIsAvailable).stream()
+				.map(tProduct -> ProductMapper.mapProductToProductDto(tProduct)).collect(Collectors.toList());
+	}
+
 }

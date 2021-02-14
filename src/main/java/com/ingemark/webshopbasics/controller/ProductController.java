@@ -1,7 +1,5 @@
 package com.ingemark.webshopbasics.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ingemark.webshopbasics.dto.ProductDto;
+import com.ingemark.webshopbasics.rest.model.RestResponse;
 import com.ingemark.webshopbasics.service.ProductService;
 
 @RestController
@@ -28,27 +27,30 @@ public class ProductController {
 	private ProductService iProductService;
 
 	@GetMapping()
-	public ResponseEntity<List<ProductDto>> findAll() {
-		return ResponseEntity.ok(iProductService.findAll());
+	public ResponseEntity<RestResponse> findAll() {
+		return new ResponseEntity<RestResponse>(RestResponse.builder().data(iProductService.findAll()).build(),
+				HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<ProductDto> getOne(@PathVariable("id") Long pId) {
-		return new ResponseEntity<ProductDto>(iProductService.getOne(pId), HttpStatus.OK);
+	public ResponseEntity<RestResponse> getOne(@PathVariable("id") Long pId) {
+		return new ResponseEntity<RestResponse>(RestResponse.builder().data(iProductService.getOne(pId)).build(),
+				HttpStatus.OK);
 	}
 
 	@PostMapping()
-	public ResponseEntity<ProductDto> save(@Valid @RequestBody ProductDto pProductDto) {
-		return new ResponseEntity<ProductDto>(iProductService.save(pProductDto), HttpStatus.CREATED);
+	public ResponseEntity<RestResponse> save(@Valid @RequestBody ProductDto pProductDto) {
+		return new ResponseEntity<RestResponse>(RestResponse.builder().data(iProductService.save(pProductDto)).build(),
+				HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<ProductDto> update(@Valid @PathVariable("id") Long pProductId,
+	public ResponseEntity<RestResponse> update(@Valid @PathVariable("id") Long pProductId,
 			@Valid @RequestBody ProductDto pProductDto) {
 		ProductDto tResponse = iProductService.update(pProductId, pProductDto);
 		if (tResponse.getId().equals(pProductId))
-			return new ResponseEntity<ProductDto>(tResponse, HttpStatus.OK);
-		return new ResponseEntity<ProductDto>(tResponse, HttpStatus.CREATED);
+			return new ResponseEntity<RestResponse>(RestResponse.builder().data(tResponse).build(), HttpStatus.OK);
+		return new ResponseEntity<RestResponse>(RestResponse.builder().data(tResponse).build(), HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/{id}")
@@ -56,7 +58,7 @@ public class ProductController {
 	public ResponseEntity<Void> delete(@PathVariable("id") Long pProductId) {
 
 		iProductService.delete(pProductId);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 
 }

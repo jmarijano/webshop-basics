@@ -17,4 +17,6 @@ public interface ProductService {
 	void delete(Long pProductId);
 
 	List<ProductDto> findAllByIds(List<Long> pIds);
+
+	List<ProductDto> findAllByIdInAndIsAvailable(List<Long> pIds, Boolean pIsAvailable);
 }

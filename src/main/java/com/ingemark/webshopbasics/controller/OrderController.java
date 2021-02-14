@@ -1,9 +1,6 @@
 package com.ingemark.webshopbasics.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ingemark.webshopbasics.dto.OrderDto;
+import com.ingemark.webshopbasics.rest.model.RestResponse;
 import com.ingemark.webshopbasics.service.OrderService;
 
 @RestController
@@ -28,18 +26,21 @@ public class OrderController {
 	private OrderService iOrderService;
 
 	@GetMapping()
-	public ResponseEntity<List<OrderDto>> readAllOrders() {
-		return new ResponseEntity<List<OrderDto>>(iOrderService.findAll(), HttpStatus.OK);
+	public ResponseEntity<RestResponse> readAllOrders() {
+		return new ResponseEntity<RestResponse>(RestResponse.builder().data(iOrderService.findAll()).build(),
+				HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<OrderDto> readOrder(@PathVariable("id") Long pIdOrder) {
-		return new ResponseEntity<OrderDto>(iOrderService.getOne(pIdOrder), HttpStatus.OK);
+	public ResponseEntity<RestResponse> readOrder(@PathVariable("id") Long pIdOrder) {
+		return new ResponseEntity<RestResponse>(RestResponse.builder().data(iOrderService.getOne(pIdOrder)).build(),
+				HttpStatus.OK);
 	}
 
 	@PostMapping()
-	public ResponseEntity<OrderDto> createOrder(@Valid @RequestBody OrderDto pOrderDto) {
-		return new ResponseEntity<OrderDto>(iOrderService.save(pOrderDto), HttpStatus.CREATED);
+	public ResponseEntity<RestResponse> createOrder(@Valid @RequestBody OrderDto pOrderDto) {
+		return new ResponseEntity<RestResponse>(RestResponse.builder().data(iOrderService.save(pOrderDto)).build(),
+				HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/{id}")
@@ -49,18 +50,19 @@ public class OrderController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<OrderDto> updateOrder(@PathVariable("id") Long pIdOrder,
+	public ResponseEntity<RestResponse> updateOrder(@PathVariable("id") Long pIdOrder,
 			@Valid @RequestBody OrderDto pOrderDto) {
 		OrderDto tOrderDto = iOrderService.update(pIdOrder, pOrderDto);
 		if (tOrderDto.getId().equals(pIdOrder)) {
-			return new ResponseEntity<OrderDto>(tOrderDto, HttpStatus.OK);
+			return new ResponseEntity<RestResponse>(RestResponse.builder().data(tOrderDto).build(), HttpStatus.OK);
 		}
-		return new ResponseEntity<OrderDto>(tOrderDto, HttpStatus.CREATED);
+		return new ResponseEntity<RestResponse>(RestResponse.builder().data(tOrderDto).build(), HttpStatus.CREATED);
 	}
 
 	@GetMapping("/{id}/finalization")
-	public ResponseEntity<OrderDto> finalizeOrder(@PathVariable("id") Long pIdOrder) {
-		return new ResponseEntity<OrderDto>(iOrderService.finalize(pIdOrder), HttpStatus.OK);
+	public ResponseEntity<RestResponse> finalizeOrder(@PathVariable("id") Long pIdOrder) {
+		return new ResponseEntity<RestResponse>(RestResponse.builder().data(iOrderService.finalize(pIdOrder)).build(),
+				HttpStatus.OK);
 
 	}
 }

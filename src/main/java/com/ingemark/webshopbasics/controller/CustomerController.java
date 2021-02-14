@@ -1,7 +1,5 @@
 package com.ingemark.webshopbasics.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ingemark.webshopbasics.dto.CustomerDto;
+import com.ingemark.webshopbasics.rest.model.RestResponse;
 import com.ingemark.webshopbasics.service.CustomerService;
 
 @RestController
@@ -28,34 +27,37 @@ public class CustomerController {
 	private CustomerService iCustomerService;
 
 	@GetMapping()
-	public ResponseEntity<List<CustomerDto>> findAll() {
-		return ResponseEntity.ok(iCustomerService.findAll());
+	public ResponseEntity<RestResponse> findAll() {
+		return new ResponseEntity<RestResponse>(RestResponse.builder().data(iCustomerService.findAll()).build(),
+				HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<CustomerDto> getOne(@PathVariable("id") Long pId) {
-		return new ResponseEntity<CustomerDto>(iCustomerService.getOne(pId), HttpStatus.OK);
+	public ResponseEntity<RestResponse> getOne(@PathVariable("id") Long pId) {
+		return new ResponseEntity<RestResponse>(RestResponse.builder().data(iCustomerService.getOne(pId)).build(),
+				HttpStatus.OK);
 	}
 
 	@PostMapping()
-	public ResponseEntity<CustomerDto> save(@Valid @RequestBody CustomerDto pCustomerDto) {
-		return new ResponseEntity<CustomerDto>(iCustomerService.save(pCustomerDto), HttpStatus.CREATED);
+	public ResponseEntity<RestResponse> save(@Valid @RequestBody CustomerDto pCustomerDto) {
+		return new ResponseEntity<RestResponse>(
+				RestResponse.builder().data(iCustomerService.save(pCustomerDto)).build(), HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<CustomerDto> save(@PathVariable("id") Long pCustomerId,
+	public ResponseEntity<RestResponse> save(@PathVariable("id") Long pCustomerId,
 			@Valid @RequestBody CustomerDto pCustomerDto) {
 		CustomerDto tResponse = iCustomerService.update(pCustomerId, pCustomerDto);
 		if (tResponse.getId().equals(pCustomerId))
-			return new ResponseEntity<CustomerDto>(tResponse, HttpStatus.OK);
-		return new ResponseEntity<CustomerDto>(tResponse, HttpStatus.CREATED);
+			return new ResponseEntity<RestResponse>(RestResponse.builder().data(tResponse).build(), HttpStatus.OK);
+		return new ResponseEntity<RestResponse>(RestResponse.builder().data(tResponse).build(), HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ResponseEntity<?> delete(@PathVariable("id") Long pProductId) {
+	public ResponseEntity<Void> delete(@PathVariable("id") Long pProductId) {
 
 		iCustomerService.delete(pProductId);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 }

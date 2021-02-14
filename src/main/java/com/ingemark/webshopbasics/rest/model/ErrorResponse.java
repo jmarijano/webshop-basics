@@ -1,9 +1,10 @@
-package com.ingemark.webshopbasics.exception;
+package com.ingemark.webshopbasics.rest.model;
 
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.ingemark.webshopbasics.exception.RestError;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

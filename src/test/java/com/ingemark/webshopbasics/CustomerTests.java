@@ -65,10 +65,10 @@ public class CustomerTests {
 	}
 
 	@Test
-	void proba() {
+	void check_customer_service_validation() {
 		CustomerDto tProduct = new CustomerDto();
 		assertThatThrownBy(() -> {
 			iCustomerService.save(tProduct);
-		}).isInstanceOf(ConstraintViolationException.class);
+		}).as("Check customer service validation").isInstanceOf(ConstraintViolationException.class);
 	}
 }

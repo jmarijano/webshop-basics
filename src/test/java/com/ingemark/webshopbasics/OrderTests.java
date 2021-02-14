@@ -1,11 +1,13 @@
 package com.ingemark.webshopbasics;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.ArrayList;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.ingemark.webshopbasics.controller.OrderController;
 import com.ingemark.webshopbasics.dto.OrderDto;
+import com.ingemark.webshopbasics.dto.ProductDto;
 import com.ingemark.webshopbasics.repository.OrderRepository;
 import com.ingemark.webshopbasics.service.OrderService;
 
@@ -60,5 +63,13 @@ public class OrderTests {
 		Set<ConstraintViolation<OrderDto>> violations = iValidator.validate(tOrderDto);
 		assertThat(violations).as("Check that orderDto has no validation errors").isEmpty();
 
+	}
+
+	@Test
+	void check_product_service_validation() {
+		OrderDto tOrderDto = new OrderDto();
+		assertThatThrownBy(() -> {
+			iOrderService.save(tOrderDto);
+		}).as("Check order service validation").isInstanceOf(ConstraintViolationException.class);
 	}
 }

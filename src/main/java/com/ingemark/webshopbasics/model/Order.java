@@ -1,5 +1,6 @@
 package com.ingemark.webshopbasics.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,10 +40,10 @@ public class Order {
 	private OrderStatusEnum status;
 
 	@Column(name = "total_price_hrk")
-	private Double totalPriceHrk;
+	private BigDecimal totalPriceHrk;
 
 	@Column(name = "total_price_eur")
-	private Double totalPriceEur;
+	private BigDecimal totalPriceEur;
 
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<OrderItem> orderItems = new ArrayList<>();

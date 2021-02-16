@@ -1,6 +1,8 @@
 package com.ingemark.webshopbasics.service;
 
+import java.math.BigDecimal;
+
 public interface OrderItemService {
 
-	Double selectTotalByOrderId(Long pIdOrder);
+	BigDecimal selectTotalByOrderId(Long pIdOrder);
 }

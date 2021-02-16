@@ -1,5 +1,7 @@
 package com.ingemark.webshopbasics.dto;
 
+import java.math.BigDecimal;
+
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -28,7 +30,7 @@ public class ProductDto {
 
 	@NotNull(message = "{empty.product.price}")
 	@DecimalMin(value = "0.0", inclusive = false, message = "{invalid.product.price}")
-	private Double price;
+	private BigDecimal price;
 	private String description;
 	@NotNull(message = "{empty.product.is.available}")
 	private Boolean isAvailable;

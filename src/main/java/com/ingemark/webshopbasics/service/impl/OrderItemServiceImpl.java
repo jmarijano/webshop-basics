@@ -1,5 +1,6 @@
 package com.ingemark.webshopbasics.service.impl;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,9 @@ public class OrderItemServiceImpl implements OrderItemService {
 	private OrderItemRepository iOrderItemRepository;
 
 	@Override
-	public Double selectTotalByOrderId(Long pIdOrder) {
-		Optional<Double> tOutputOptional = iOrderItemRepository.selectTotalByOrderId(pIdOrder);
-		return tOutputOptional.isPresent() ? tOutputOptional.get() : Double.valueOf(0L);
+	public BigDecimal selectTotalByOrderId(Long pIdOrder) {
+		Optional<BigDecimal> tOutputOptional = iOrderItemRepository.selectTotalByOrderId(pIdOrder);
+		return tOutputOptional.isPresent() ? tOutputOptional.get() : BigDecimal.valueOf(0L);
 	}
 
 }

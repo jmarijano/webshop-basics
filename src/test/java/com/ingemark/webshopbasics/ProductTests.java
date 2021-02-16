@@ -3,6 +3,7 @@ package com.ingemark.webshopbasics;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -59,7 +60,7 @@ public class ProductTests {
 		ProductDto tProductDto = new ProductDto();
 		tProductDto.setCode("123456790!");
 		tProductDto.setIsAvailable(true);
-		tProductDto.setPrice(0.1);
+		tProductDto.setPrice(BigDecimal.valueOf(0.1));
 		tProductDto.setName("Product 1");
 		Set<ConstraintViolation<ProductDto>> violations = iValidator.validate(tProductDto);
 		assertThat(violations).as("Check that productDto has no validation errors").isEmpty();

@@ -1,5 +1,7 @@
 package com.ingemark.webshopbasics.model;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,7 +27,7 @@ public class Product {
 	private String name;
 
 	@Column(name = "price_hrk", nullable = false)
-	private Double priceHrk;
+	private BigDecimal priceHrk;
 
 	@Column(name = "description")
 	private String description;

@@ -1,5 +1,6 @@
 package com.ingemark.webshopbasics.dto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -20,6 +21,6 @@ public class OrderDto {
 	private List<ItemDto> products;
 
 	private String status;
-	private Double totalPriceHrk;
-	private Double totalPriceEur;
+	private BigDecimal totalPriceHrk;
+	private BigDecimal totalPriceEur;
 }

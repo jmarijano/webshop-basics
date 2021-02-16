@@ -1,5 +1,6 @@
 package com.ingemark.webshopbasics.service.impl;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -7,6 +8,8 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +37,8 @@ import com.ingemark.webshopbasics.utils.OrderMapper;
 
 @Service
 public class OrderServiceImpl implements OrderService {
+
+	private static final Logger iLogger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
 	@Autowired
 	private OrderRepository iOrderRepository;
@@ -146,7 +151,7 @@ public class OrderServiceImpl implements OrderService {
 		}
 		Order tOrder = tOptionalOrder.get();
 		tOrder.setStatus(OrderStatusEnum.SUBMITTED);
-		Double tTotalPriceHrk = iOrderItemService.selectTotalByOrderId(pOrderId);
+		BigDecimal tTotalPriceHrk = iOrderItemService.selectTotalByOrderId(pOrderId);
 		tOrder.setTotalPriceHrk(tTotalPriceHrk);
 		RestTemplate tRestTemplate = new RestTemplate();
 		URI tTargetUri = UriComponentsBuilder.fromUriString(iHnbUri).queryParam("valuta", "EUR").build().toUri();
@@ -161,8 +166,8 @@ public class OrderServiceImpl implements OrderService {
 			throw new SystemErrorException("wrong.hnb.response");
 		}
 
-		Double tKupovniTecaj = Double.valueOf(tResponse[0].getKupovniZaDevize().replace(",", "."));
-		tOrder.setTotalPriceEur(tTotalPriceHrk / tKupovniTecaj);
+		BigDecimal tKupovniTecaj = new BigDecimal(tResponse[0].getKupovniZaDevize().replace(",", "."));
+		tOrder.setTotalPriceEur(tTotalPriceHrk.divide(tKupovniTecaj));
 
 		return OrderMapper.mapOrderToOrderDto(iOrderRepository.save(tOrder));
 	}

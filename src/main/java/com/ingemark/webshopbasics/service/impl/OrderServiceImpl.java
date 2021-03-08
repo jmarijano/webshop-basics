@@ -1,6 +1,7 @@
 package com.ingemark.webshopbasics.service.impl;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -167,7 +168,7 @@ public class OrderServiceImpl implements OrderService {
 		}
 
 		BigDecimal tKupovniTecaj = new BigDecimal(tResponse[0].getKupovniZaDevize().replace(",", "."));
-		tOrder.setTotalPriceEur(tTotalPriceHrk.divide(tKupovniTecaj));
+		tOrder.setTotalPriceEur(tTotalPriceHrk.divide(tKupovniTecaj, MathContext.DECIMAL128));
 
 		return OrderMapper.mapOrderToOrderDto(iOrderRepository.save(tOrder));
 	}
